@@ -15,4 +15,4 @@ jobs:
           uses: actions/setup-dotnet@v3
           with:
             dotnet-version: 8.0.x
-        - run: dotnet test TestProject1/TestProject1.csproj --configuration Debug --no-restore --verbosity normal
+        - run: dotnet test TestProject1/TestProject1.csproj --configuration Debug --verbosity normal
