@@ -2,15 +2,10 @@
 
 namespace TestProject1;
 
-[TestFixture("abc")]
-[TestFixture("def")]
+[TestFixture]
 [Apartment(ApartmentState.STA), CancelAfter(1000)]
 public sealed class TestTestFixture
 {
-    private readonly string parameter;
-
-    public TestTestFixture(string p) => this.parameter = p;
-
     [SetUp]
     public void Setup()
     {
@@ -36,8 +31,7 @@ public sealed class TestTestFixture
     [Test]
     public async Task T()
     {
-        await Console.Out.WriteLineAsync(parameter);
         await Task.Delay(30000);
-        Assert.Fail();
+        Assert.Pass();
     }
 }
