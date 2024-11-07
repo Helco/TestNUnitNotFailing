@@ -3,7 +3,7 @@
 namespace TestProject1;
 
 [TestFixture]
-[Apartment(ApartmentState.STA), CancelAfter(1000)]
+[CancelAfter(10000)]
 public sealed class TestTestFixture
 {
     [SetUp]
@@ -29,9 +29,40 @@ public sealed class TestTestFixture
     }
 
     [Test]
-    public async Task T()
+    public async Task LoadSynchronousWhileAlreadyStartedToLoad()
     {
-        await Task.Delay(30000);
-        Assert.Pass();
+        var fileLoader = new TestFileLoader();
+        FileLoading.LoadAsync(fileLoader);
+
+        // Make sure that the asset is currently loading
+        await fileLoader.WasStarted.Task;
+        
+        var contents = FileLoading.LoadSync(fileLoader);
+        Assert.That(contents, Is.EqualTo("The contents of the loaded file"));
+    }
+}
+
+public static class FileLoading
+{
+    public static void LoadAsync(TestFileLoader a) => Task.Run(a.LoadStuff);
+
+    public static string LoadSync(TestFileLoader a)
+    {
+        // Check whether file was already loaded
+        // Check whether file is already being loaded
+        // Start and/or wait for completion of loading process
+        return "The contents of the loaded file";
+    }
+}
+
+public class TestFileLoader
+{
+    // Just to signal for testing that loading has begun
+    public TaskCompletionSource WasStarted = new();
+
+    public async Task LoadStuff()
+    {
+        WasStarted.SetResult();
+        await Task.Delay(2000);
     }
 }
