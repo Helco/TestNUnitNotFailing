@@ -48,6 +48,7 @@ public static class FileLoading
 
     public static string LoadSync(TestFileLoader a)
     {
+        // Check that we are currently on the main thread
         // Check whether file was already loaded
         // Check whether file is already being loaded
         // Start and/or wait for completion of loading process
